@@ -1,26 +1,24 @@
 package com.aulaspring.dscomerce.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aulaspring.dscomerce.entities.Product;
-import com.aulaspring.dscomerce.repositories.ProductRepository;
+import com.aulaspring.dscomerce.dto.ProductDTO;
+import com.aulaspring.dscomerce.services.ProductService;
 
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
 
-	@Autowired //autowired injeta productrepository nessa classe
-	private ProductRepository repository;
+	@Autowired 
+	private ProductService service;
 	
-	@GetMapping
-	public String test() {
-		Optional<Product> result = repository.findById(1L); //findbyid retorna um objeto do tipo optional
-		Product product = result.get(); //o .get pega o que foi retornado no optional e passa para a variavel product
-		return product.getName();
+	@GetMapping(value = "/{id}")
+	public ProductDTO findById(@PathVariable Long id) {
+		ProductDTO dto = service.findById(id);
+		return dto;
 	}
 }
